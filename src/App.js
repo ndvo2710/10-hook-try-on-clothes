@@ -1,7 +1,10 @@
+import "./assets/css/style.css";
+import DressingRoom from "./components/DressingRoom/DressingRoom";
+
 function App() {
   return <div className="App">
-      123
-    </div>;
+        <DressingRoom />
+      </div>;
 }
 
 export default App;

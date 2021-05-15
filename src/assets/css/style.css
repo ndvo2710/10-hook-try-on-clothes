@@ -48,24 +48,29 @@
   top: 12%;
   left: 22%;
 }
-.bikinitop {
+/* .bikinitop {
   width: 250px;
   height: 500px;
-  background: url("./../images/allbody/bikini_branew.png");
+  background: url("./../images/allbody/bikini_bra.png");
   position: absolute;
   top: 12%;
   left: 22%;
   z-index: 1;
 }
-
 .bikinibottom {
   width: 250px;
   height: 500px;
-  background: url("./../images/allbody/bikini_pantsnew.png");
+  background: url("./../images/allbody/bikini_pants.png");
   position: absolute;
   top: 12%;
   left: 22%;
   z-index: 1;
+} */
+.topwear {
+  background: url("./../images/clothes/topcloth1.png");
+}
+.bottomwear {
+  background: url("./../images/clothes/botcloth1.png");
 }
 
 .model {
