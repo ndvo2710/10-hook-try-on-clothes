@@ -5,6 +5,7 @@ import MainDresser from '../MainDresser/MainDresser'
 import Room from '../Room/Room'
 
 function DressingRoom() {
+
     return (
         <div className="container-fluid">
             <Banner />

@@ -1,20 +1,21 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 
 function Room() {
+
+    const currentDressingRoomSet = useSelector(state => state.DressingRoomReducer.currentDressingRoomSet);
     return (
         <div className="col-md-4">
             <div className="contain">
                 <div className="body"></div>
                 <div className="model"></div>
-                <div className="hairstyle"></div>
-                <div className="necklace"></div>
-                <div className="bikinitop"></div>
-                <div className="bikinibottom"></div>
-                <div className="topwear" style={{ width: "500px", height: "500px", position: "absolute", top: "-9%", left: "-5%", zIndex: 3, transform: "scale(0.5)" }}></div>
-                <div className="bottomwear" style={{ width: "500px", height: "500px", position: "absolute", top: "-9%", left: "-5%", zIndex: 3, transform: "scale(0.5)" }}></div>
-                <div className="handbag" style={{ backgroundImage: "url(./img/handbag2.png)" }}></div>
-                <div className="feet"></div>
-                <div className="background"></div>
+                <div className="hairstyle" style={{ backgroundImage: `url(${currentDressingRoomSet.hairstyle})` }}></div>
+                <div className="necklace" style={{ backgroundImage: `url(${currentDressingRoomSet.necklaces})` }}></div>
+                <div className="topwear" style={{ backgroundImage: `url(${currentDressingRoomSet.topclothes})` }}></div>
+                <div className="bottomwear" style={{ backgroundImage: `url(${currentDressingRoomSet.botclothes})` }}></div>
+                <div className="handbag" style={{ backgroundImage: `url(${currentDressingRoomSet.handbags})` }}></div>
+                <div className="feet" style={{ backgroundImage: `url(${currentDressingRoomSet.shoes})` }}></div>
+                <div className="background" style={{ backgroundImage: `url(${currentDressingRoomSet.background})` }}></div>
             </div>
         </div>
     )

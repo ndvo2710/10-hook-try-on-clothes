@@ -1,17 +1,15 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { default as data } from '../../data/Data.json'
-import { CHANGE_ACTIVE_TAB } from '../../redux/DressingRoomActionTypeConstants';
+import { CHANGE_ACTIVE_TAB, TRY_IT_ON } from '../../redux/DressingRoomActionTypeConstants';
 
 
 
 // const currentActiveTab = data.navPills[1]
 
 
-function Drawer() {
-    const { navPills, tabPanes } = data;
-    // console.log('navPills', navPills);
-    // console.log('tabPanes', tabPanes);
+function Drawer(props) {
+
+    const { navPills, tabPanes } = props;
 
     const currentActiveTab = useSelector(state => state.DressingRoomReducer.currentActiveTab);
     const dispatch = useDispatch();
@@ -43,10 +41,16 @@ function Drawer() {
                         <div className="card text-center">
                             <img src={tabPaneItem.imgSrc_jpg} alt={tabPaneItem.name} />
                             <span className="card-title font-weight-bold">{tabPaneItem.name}</span>
-                            <button className="card-text">Try</button>
+                            <button className="card-text" onClick={() => {
+                                dispatch({
+                                    type: TRY_IT_ON,
+                                    tryItem: {
+                                        [tabPaneItem.type]: tabPaneItem.imgSrc_png
+                                    }
+                                }) // dynamic object key: https://www.samanthaming.com/tidbits/37-dynamic-property-name-with-es6/#how-to-access-object-value-with-emoji-keys
+                            }}>Try</button>
                         </div>
                     </div>
-
                 )
             }
             return (null)
