@@ -49,7 +49,7 @@
   left: 22%;
 }
 
-.topwear {
+.topclothes {
   background: url("./../images/allbody/bikini_bra.png");
   width: 500px;
   height: 500px;
@@ -60,7 +60,7 @@
   transform: scale(0.5);
   
 }
-.bottomwear {
+.botclothes {
   background: url("./../images/allbody/bikini_pants.png");
   width: 500px;
   height: 500px;
@@ -111,7 +111,7 @@
   z-index: 4;
 }
 
-.feet {
+.shoes {
   width: 500px;
   height: 1000px;
   background: url("./../images/shoes/shoes1.png");

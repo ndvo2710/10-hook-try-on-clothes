@@ -1,6 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { CHANGE_ACTIVE_TAB, TRY_IT_ON } from '../../redux/DressingRoomActionTypeConstants';
+import { getCurrentRef } from '../Room/Room';
 
 
 
@@ -42,6 +43,7 @@ function Drawer(props) {
                             <img src={tabPaneItem.imgSrc_jpg} alt={tabPaneItem.name} />
                             <span className="card-title font-weight-bold">{tabPaneItem.name}</span>
                             <button className="card-text" onClick={() => {
+                                console.log(getCurrentRef());
                                 dispatch({
                                     type: TRY_IT_ON,
                                     tryItem: {

@@ -1,24 +1,40 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { useSelector } from 'react-redux'
+
+let getRef;
+
 
 function Room() {
 
     const currentDressingRoomSet = useSelector(state => state.DressingRoomReducer.currentDressingRoomSet);
+    const currentActiveTab = useSelector(state => state.DressingRoomReducer.currentActiveTab);
+
+    const changeRef = useRef(null);
+
+    getRef = changeRef;
+
     return (
         <div className="col-md-4">
             <div className="contain">
                 <div className="body"></div>
                 <div className="model"></div>
-                <div className="hairstyle" style={{ backgroundImage: `url(${currentDressingRoomSet.hairstyle})` }}></div>
-                <div className="necklace" style={{ backgroundImage: `url(${currentDressingRoomSet.necklaces})` }}></div>
-                <div className="topwear" style={{ backgroundImage: `url(${currentDressingRoomSet.topclothes})` }}></div>
-                <div className="bottomwear" style={{ backgroundImage: `url(${currentDressingRoomSet.botclothes})` }}></div>
-                <div className="handbag" style={{ backgroundImage: `url(${currentDressingRoomSet.handbags})` }}></div>
-                <div className="feet" style={{ backgroundImage: `url(${currentDressingRoomSet.shoes})` }}></div>
-                <div className="background" style={{ backgroundImage: `url(${currentDressingRoomSet.background})` }}></div>
+                {
+                    Object.keys(currentDressingRoomSet).map((k, index) => {
+                        const v = currentDressingRoomSet[k];
+                        if (k === currentActiveTab.type) {
+                            return <div ref={changeRef} className={k} style={{ backgroundImage: `url(${v})` }} key={index}></div>
+                        }
+                        return <div className={k} style={{ backgroundImage: `url(${v})` }} key={index}></div>
+                    })
+                }
             </div>
         </div>
     )
 }
 
+
 export default Room
+export const getCurrentRef = () => {
+    return getRef.current
+}
+
