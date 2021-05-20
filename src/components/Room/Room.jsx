@@ -5,7 +5,7 @@ let roomChangingItemRef;
 
 
 function Room() {
-
+    console.count('Room');
     const currentDressingRoomSet = useSelector(state => state.DressingRoomReducer.currentDressingRoomSet);
     const currentActiveTab = useSelector(state => state.DressingRoomReducer.currentActiveTab);
 

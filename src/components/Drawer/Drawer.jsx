@@ -16,6 +16,7 @@ const getTRBLCoordinates = (element) => {
 }
 
 function Drawer(props) {
+    console.count('Drawer')
 
     const { navPills, tabPanes } = props;
     const tryingItemRef = useRef({});
@@ -84,7 +85,23 @@ function Drawer(props) {
         return () => {
             console.log("Cleaning Up");
             setIsFinishedAnimation(false);
-
+            setIndexAnimation(-1);
+            console.log("-------------------");
+            console.log("-------------------");
+            setChangeItem([
+                {
+                    id: 1,
+                    cName: "moving_object",
+                    imgSrc: "./img/shoes/shoes4.png",
+                    imgAlt: "Shoes 4",
+                    from_x: 0,
+                    from_y: 0,
+                    from_scale: 1,
+                    enter_x: 0,
+                    enter_y: 0,
+                    enter_scale: 1,
+                },
+            ])
         }
     }, [isFinishedAnimation])
 
@@ -102,7 +119,7 @@ function Drawer(props) {
                                 const rCIRElemStyle = getComputedStyle(roomChangingItemRefElem);
                                 const roomChanginItemCoordinates = getTRBLCoordinates(roomChangingItemRefElem);
                                 console.log('roomChangingItemRef', roomChangingItemRefElem);
-                                console.log('its coordinates', roomChanginItemCoordinates);
+                                console.log('roomChangingItemRef coordinates', roomChanginItemCoordinates);
                                 console.log(rCIRElemStyle.top, rCIRElemStyle.left);
 
                                 console.log(tryingItemRef);
@@ -110,7 +127,7 @@ function Drawer(props) {
                                 const tryingItemRefCoordinates = getTRBLCoordinates(tryingItemRefElem);
 
                                 console.log('tryingItemRefElem', tryingItemRefElem);
-                                console.log('its coordinates', tryingItemRefCoordinates);
+                                console.log('tryingItemRefElem coordinates', tryingItemRefCoordinates);
 
                                 const newData = [{
                                     cName: "moving_object",
