@@ -1,7 +1,7 @@
 import React, { useRef } from 'react'
 import { useSelector } from 'react-redux'
 
-let getRef;
+let roomChangingItemRef;
 
 
 function Room() {
@@ -11,7 +11,7 @@ function Room() {
 
     const changeRef = useRef(null);
 
-    getRef = changeRef;
+    roomChangingItemRef = changeRef;
 
     return (
         <div className="col-md-4">
@@ -34,7 +34,7 @@ function Room() {
 
 
 export default Room
-export const getCurrentRef = () => {
-    return getRef.current
+export const getRoomChangingItemRef = () => {
+    return roomChangingItemRef.current
 }
 

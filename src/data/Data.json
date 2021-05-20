@@ -3,11 +3,11 @@
     { "tabName": "tabTopClothes", "showName": "Top", "type": "topclothes" },
     { "tabName": "tabBotClothes", "showName": "Bottom", "type": "botclothes" },
     { "tabName": "tabShoes", "showName": "Shoes", "type": "shoes" },
-    { "tabName": "tabHandBags", "showName": "Hand Bags", "type": "handbags" },
+    { "tabName": "tabHandBags", "showName": "Hand Bags", "type": "handbag" },
     {
       "tabName": "tabNecklaces",
       "showName": "Necklaces",
-      "type": "necklaces"
+      "type": "necklace"
     },
     {
       "tabName": "tabHairStyle",
@@ -151,7 +151,7 @@
     },
     {
       "id": "handbag_1",
-      "type": "handbags",
+      "type": "handbag",
       "name": "Handbag 1",
       "desc": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquid, nulla.",
       "imgSrc_jpg": "./img/handbags/handbag1_show.jpg",
@@ -159,7 +159,7 @@
     },
     {
       "id": "handbag_2",
-      "type": "handbags",
+      "type": "handbag",
       "name": "Handbag 2",
       "desc": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquid, nulla.",
       "imgSrc_jpg": "./img/handbags/handbag2_show.jpg",
@@ -167,7 +167,7 @@
     },
     {
       "id": "handbag_3",
-      "type": "handbags",
+      "type": "handbag",
       "name": "Handbag 3",
       "desc": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquid, nulla.",
       "imgSrc_jpg": "./img/handbags/handbag3_show.jpg",
@@ -175,7 +175,7 @@
     },
     {
       "id": "necklace_1",
-      "type": "necklaces",
+      "type": "necklace",
       "name": "Necklace 1",
       "desc": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquid, nulla.",
       "imgSrc_jpg": "./img/necklaces/necklace1_show.jpg",
@@ -183,7 +183,7 @@
     },
     {
       "id": "necklace_2",
-      "type": "necklaces",
+      "type": "necklace",
       "name": "Necklace 2",
       "desc": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquid, nulla.",
       "imgSrc_jpg": "./img/necklaces/necklace2_show.jpg",
@@ -191,7 +191,7 @@
     },
     {
       "id": "necklace_3",
-      "type": "necklaces",
+      "type": "necklace",
       "name": "Necklace 3",
       "desc": "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquid, nulla.",
       "imgSrc_jpg": "./img/necklaces/necklace3_show.jpg",

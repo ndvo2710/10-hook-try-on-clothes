@@ -9,7 +9,7 @@ const initialState = {
   currentDressingRoomSet: {
     hairstyle: "./img/hairstyle/hairstyle2.png",
     necklace: "./img/necklaces/necklace2.png",
-    topclothes: "./img/clothes/topcloth2.png",
+    topclothes: "./img/clothes/topcloth6.png",
     botclothes: "./img/clothes/botcloth3.png",
     handbag: "./img/handbags/handbag3.png",
     shoes: "./img/shoes/shoes4.png",
