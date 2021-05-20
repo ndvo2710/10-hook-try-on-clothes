@@ -15,6 +15,22 @@ const getTRBLCoordinates = (element) => {
     // return [rect.top, rect.right, rect.bottom, rect.left]
 }
 
+// bottom  x-20  y+90
+// shoes  x-10 y+270 s.9
+// handbags y130 x-100 s.5
+// hair x+30 y0 s.7
+// background x210 y210 s3.4
+const adjustCoordinate = (itemType) => {
+    switch (itemType) {
+        case 'botclothes': return [-20, 90, 1]
+        case 'shoes': return [-10, 270, 0.9]
+        case 'handbag': return [-100, 130, 0.5]
+        case 'hairstyle': return [30, 0, 0.7]
+        case 'background': return [210, 210, 3.4]
+        default: return [0, 0, 1]
+    }
+}
+
 function Drawer(props) {
     console.count('Drawer')
 
@@ -76,7 +92,6 @@ function Drawer(props) {
         })
     }
 
-
     useEffect(() => {
         dispatch({
             type: TRY_IT_ON,
@@ -90,10 +105,9 @@ function Drawer(props) {
             console.log("-------------------");
             setChangeItem([
                 {
-                    id: 1,
                     cName: "moving_object",
-                    imgSrc: "./img/shoes/shoes4.png",
-                    imgAlt: "Shoes 4",
+                    imgSrc: "",
+                    imgAlt: "",
                     from_x: 0,
                     from_y: 0,
                     from_scale: 1,
@@ -129,6 +143,8 @@ function Drawer(props) {
                                 console.log('tryingItemRefElem', tryingItemRefElem);
                                 console.log('tryingItemRefElem coordinates', tryingItemRefCoordinates);
 
+                                const coordinateAdjustment = adjustCoordinate(tabPaneItem.type);
+
                                 const newData = [{
                                     cName: "moving_object",
                                     imgSrc: tabPaneItem.imgSrc_jpg,
@@ -136,9 +152,9 @@ function Drawer(props) {
                                     from_x: 1,
                                     from_y: 1,
                                     from_scale: 1,
-                                    enter_x: (roomChanginItemCoordinates.right - tryingItemRefCoordinates.right),
-                                    enter_y: (roomChanginItemCoordinates.top - tryingItemRefCoordinates.top),
-                                    enter_scale: 1,
+                                    enter_x: (roomChanginItemCoordinates.right - tryingItemRefCoordinates.right) + coordinateAdjustment[0],
+                                    enter_y: (roomChanginItemCoordinates.top - tryingItemRefCoordinates.top) + coordinateAdjustment[1],
+                                    enter_scale: 1 * coordinateAdjustment[2],
 
                                 }]
                                 setChangeItem(newData)
