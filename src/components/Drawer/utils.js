@@ -9,7 +9,7 @@ export const adjustCoordinate = itemType => {
     case "hairstyle":
       return [30, 0, 0.7];
     case "background":
-      return [210, 210, 3.4];
+      return [-100, 230, 3.2];
     default:
       return [0, 0, 1];
   }
