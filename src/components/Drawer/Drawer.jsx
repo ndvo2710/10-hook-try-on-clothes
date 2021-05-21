@@ -2,76 +2,29 @@ import { animated, useSpring } from '@react-spring/web';
 import React, { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { CHANGE_ACTIVE_TAB, TRY_IT_ON } from '../../redux/DressingRoomActionTypeConstants';
+import { getTRBLCoordinates } from '../../utils/coordinates';
 import { getRoomChangingItemRef } from '../Room/Room';
-
-const getTRBLCoordinates = (element) => {
-    const rect = element.getBoundingClientRect();
-    return {
-        top: rect.top,
-        bottom: rect.bottom,
-        right: rect.right,
-        left: rect.left,
-    }
-    // return [rect.top, rect.right, rect.bottom, rect.left]
-}
-
-// bottom  x-20  y+90
-// shoes  x-10 y+270 s.9
-// handbags y130 x-100 s.5
-// hair x+30 y0 s.7
-// background x210 y210 s3.4
-const adjustCoordinate = (itemType) => {
-    switch (itemType) {
-        case 'botclothes': return [-20, 90, 1]
-        case 'shoes': return [-10, 270, 0.9]
-        case 'handbag': return [-100, 130, 0.5]
-        case 'hairstyle': return [30, 0, 0.7]
-        case 'background': return [210, 210, 3.4]
-        default: return [0, 0, 1]
-    }
-}
+import { initialLocalState } from './state';
+import { adjustCoordinate } from './utils';
 
 function Drawer(props) {
     console.count('Drawer')
 
     const { navPills, tabPanes } = props;
+    const currentActiveTab = useSelector(state => state.DressingRoomReducer.currentActiveTab);
+    const dispatch = useDispatch();
+
     const tryingItemRef = useRef({});
 
-    const [indexAnimation, setIndexAnimation] = useState(-1)
     const [isFinishedAnimation, setIsFinishedAnimation] = useState(false)
-    const [dispatchTryItemValue, setDispatchTryItemValue] = useState({})
-
-    const [changeItem, setChangeItem] = useState([
-        {
-            id: 1,
-            cName: "moving_object",
-            imgSrc: "./img/shoes/shoes4.png",
-            imgAlt: "Shoes 4",
-            from_x: 0,
-            from_y: 0,
-            from_scale: 1,
-            enter_x: 0,
-            enter_y: 0,
-            enter_scale: 1,
-        },
-    ]);
+    const [changeItem, setChangeItem] = useState(initialLocalState);
 
     const animProps = useSpring({
         config: { duration: 500 },
-        from: { transform: `translate3d(${changeItem[0].from_x}px,${changeItem[0].from_y}px,0px) scale(${changeItem[0].from_scale})` },
+        from: { transform: `translate3d(0px,0px,0px) scale(1)` },
         to: { transform: `translate3d(${changeItem[0].enter_x}px,${changeItem[0].enter_y}px,0px) scale(${changeItem[0].enter_scale})` },
         onRest: () => setIsFinishedAnimation(true),
     })
-
-    const renderItem = () => {
-        if (changeItem.length === 1) {
-            return <animated.img style={animProps} ref={(element) => tryingItemRef.current[indexAnimation] = element} className={changeItem[0].cName} src={changeItem[0].imgSrc} alt={changeItem[0].imgAlt}></animated.img>
-        }
-        return (null)
-    }
-
-    const currentActiveTab = useSelector(state => state.DressingRoomReducer.currentActiveTab);
-    const dispatch = useDispatch();
 
     const renderNavBar = () => {
         return navPills.map((navItem, index) => {
@@ -92,43 +45,21 @@ function Drawer(props) {
         })
     }
 
-    useEffect(() => {
-        dispatch({
-            type: TRY_IT_ON,
-            tryItem: dispatchTryItemValue
-        })
-        return () => {
-            console.log("Cleaning Up");
-            setIsFinishedAnimation(false);
-            setIndexAnimation(-1);
-            console.log("-------------------");
-            console.log("-------------------");
-            setChangeItem([
-                {
-                    cName: "moving_object",
-                    imgSrc: "",
-                    imgAlt: "",
-                    from_x: 0,
-                    from_y: 0,
-                    from_scale: 1,
-                    enter_x: 0,
-                    enter_y: 0,
-                    enter_scale: 1,
-                },
-            ])
-        }
-    }, [isFinishedAnimation])
-
     const renderTabPanes = () => {
         return tabPanes.map((tabPaneItem, index) => {
             if (tabPaneItem.type === currentActiveTab.type) {
                 return (
                     <div className="col-md-3" key={index}>
                         <div className="card text-center">
-
-                            {indexAnimation === index ? renderItem() : (<img ref={(element) => tryingItemRef.current[index] = element} src={tabPaneItem.imgSrc_jpg} alt={tabPaneItem.name} />)}
+                            <animated.img
+                                style={changeItem[0].indexAnimation === index ? animProps : {}}
+                                ref={(element) => tryingItemRef.current[index] = element}
+                                src={tabPaneItem.imgSrc_jpg}
+                                alt={tabPaneItem.name}>
+                            </animated.img>
                             <span className="card-title font-weight-bold">{tabPaneItem.name}</span>
                             <button className="card-text" onClick={() => {
+                                console.count('Button is clicked');
                                 const roomChangingItemRefElem = getRoomChangingItemRef();
                                 const rCIRElemStyle = getComputedStyle(roomChangingItemRefElem);
                                 const roomChanginItemCoordinates = getTRBLCoordinates(roomChangingItemRefElem);
@@ -146,23 +77,18 @@ function Drawer(props) {
                                 const coordinateAdjustment = adjustCoordinate(tabPaneItem.type);
 
                                 const newData = [{
-                                    cName: "moving_object",
+                                    indexAnimation: index,
                                     imgSrc: tabPaneItem.imgSrc_jpg,
                                     imgAlt: tabPaneItem.name,
-                                    from_x: 1,
-                                    from_y: 1,
-                                    from_scale: 1,
                                     enter_x: (roomChanginItemCoordinates.right - tryingItemRefCoordinates.right) + coordinateAdjustment[0],
                                     enter_y: (roomChanginItemCoordinates.top - tryingItemRefCoordinates.top) + coordinateAdjustment[1],
                                     enter_scale: 1 * coordinateAdjustment[2],
-
+                                    dispatchData: {
+                                        [tabPaneItem.type]: tabPaneItem.imgSrc_png   
+                                        // dynamic object key: https://www.samanthaming.com/tidbits/37-dynamic-property-name-with-es6/#how-to-access-object-value-with-emoji-keys
+                                    }
                                 }]
-                                setChangeItem(newData)
-                                setIndexAnimation(index);
-                                setDispatchTryItemValue({
-                                    [tabPaneItem.type]: tabPaneItem.imgSrc_png   
-                                    // dynamic object key: https://www.samanthaming.com/tidbits/37-dynamic-property-name-with-es6/#how-to-access-object-value-with-emoji-keys
-                                })
+                                setChangeItem(newData);
                             }}>Try</button>
                         </div>
                     </div>
@@ -171,6 +97,23 @@ function Drawer(props) {
             return (null)
         })
     }
+
+    useEffect(() => {
+        // Component Did Update
+        dispatch({
+            type: TRY_IT_ON,
+            tryItem: changeItem[0].dispatchData
+        });
+
+        if (isFinishedAnimation) {
+            setIsFinishedAnimation(false);
+            setChangeItem(initialLocalState)
+        }
+
+        return () => {
+            // Clean Up Step
+        }
+    }, [isFinishedAnimation])
 
     return (
         <div className="col-md-8">
