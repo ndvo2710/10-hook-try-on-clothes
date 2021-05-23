@@ -1,5 +1,4 @@
-export const initialLocalState = [
-  {
+export const initialLocalState = {
     indexAnimation: -1,
     imgSrc: "",
     imgAlt: "",
@@ -7,5 +6,4 @@ export const initialLocalState = [
     enter_y: 0,
     enter_scale: 1,
     dispatchData: {}
-  }
-];
+  }; // switch back to Javascript object instead of array

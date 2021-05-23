@@ -26,7 +26,7 @@ const DressingRoomReducer = (state = initialState, action) => {
     case TRY_IT_ON: {
         // console.log('action.tryItem', action.tryItem);
         const newCurrentDressingRoomSet = {...state.currentDressingRoomSet, ...action.tryItem};
-        // console.log('state.currentDressingRoomSet', state.currentDressingRoomSet);
+        console.log('state.currentDressingRoomSet', state.currentDressingRoomSet);
         // console.log('newCurrentDressingRoomSet', newCurrentDressingRoomSet);
         state.currentDressingRoomSet = newCurrentDressingRoomSet
         return {...state}

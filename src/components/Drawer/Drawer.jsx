@@ -1,5 +1,5 @@
 import { animated, useSpring } from '@react-spring/web';
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { CHANGE_ACTIVE_TAB, TRY_IT_ON } from '../../redux/DressingRoomActionTypeConstants';
 import { getTRBLCoordinates } from '../../utils/coordinates';
@@ -11,19 +11,33 @@ function Drawer(props) {
     console.count('Drawer')
 
     const { navPills, tabPanes } = props;
+
+    const [countForceReRender, setCountForceReRender] = useState(0);
+    console.log('You have forced update ', countForceReRender, ' times');
+
     const currentActiveTab = useSelector(state => state.DressingRoomReducer.currentActiveTab);
+    // dummy Selector to pull currentDressingRoomSet from grs to this component as a non-used prop
+    // so when Room is re-rendered, Drawer will be re-rendered also.
+    useSelector(state => state.DressingRoomReducer.currentDressingRoomSet);  
     const dispatch = useDispatch();
 
     const tryingItemRef = useRef({});
-
-    const [isFinishedAnimation, setIsFinishedAnimation] = useState(false)
-    const [changeItem, setChangeItem] = useState(initialLocalState);
+    const changeItem = useRef(initialLocalState);
 
     const animProps = useSpring({
         config: { duration: 500 },
         from: { transform: `translate3d(0px,0px,0px) scale(1)` },
-        to: { transform: `translate3d(${changeItem[0].enter_x}px,${changeItem[0].enter_y}px,0px) scale(${changeItem[0].enter_scale})` },
-        onRest: () => setIsFinishedAnimation(true),
+        to: { transform: `translate3d(${changeItem.current.enter_x}px,${changeItem.current.enter_y}px,0px) scale(${changeItem.current.enter_scale})` },
+        onRest: () => {
+            console.log('------- Right After Animation -------');
+            const dpData = {...changeItem.current.dispatchData};
+            changeItem.current = initialLocalState; // must reset changeItem before dispatch data to grs (global redux state)
+            dispatch({
+                type: TRY_IT_ON,
+                tryItem: dpData
+            });
+            
+        } ,
     })
 
     const renderNavBar = () => {
@@ -52,7 +66,7 @@ function Drawer(props) {
                     <div className="col-md-3" key={index}>
                         <div className="card text-center">
                             <animated.img
-                                style={changeItem[0].indexAnimation === index ? animProps : {}}
+                                style={changeItem.current.indexAnimation === index ? animProps : {}}
                                 ref={(element) => tryingItemRef.current[index] = element}
                                 src={tabPaneItem.imgSrc_jpg}
                                 alt={tabPaneItem.name}>
@@ -61,22 +75,20 @@ function Drawer(props) {
                             <button className="card-text" onClick={() => {
                                 console.count('Button is clicked');
                                 const roomChangingItemRefElem = getRoomChangingItemRef();
-                                const rCIRElemStyle = getComputedStyle(roomChangingItemRefElem);
                                 const roomChanginItemCoordinates = getTRBLCoordinates(roomChangingItemRefElem);
-                                console.log('roomChangingItemRef', roomChangingItemRefElem);
-                                console.log('roomChangingItemRef coordinates', roomChanginItemCoordinates);
-                                console.log(rCIRElemStyle.top, rCIRElemStyle.left);
+                                // console.log('roomChangingItemRef', roomChangingItemRefElem);
+                                // console.log('roomChangingItemRef coordinates', roomChanginItemCoordinates);
 
                                 console.log(tryingItemRef);
                                 const tryingItemRefElem = tryingItemRef.current[index];
                                 const tryingItemRefCoordinates = getTRBLCoordinates(tryingItemRefElem);
 
-                                console.log('tryingItemRefElem', tryingItemRefElem);
-                                console.log('tryingItemRefElem coordinates', tryingItemRefCoordinates);
+                                // console.log('tryingItemRefElem', tryingItemRefElem);
+                                // console.log('tryingItemRefElem coordinates', tryingItemRefCoordinates);
 
                                 const coordinateAdjustment = adjustCoordinate(tabPaneItem.type);
 
-                                const newData = [{
+                                const newData = {
                                     indexAnimation: index,
                                     imgSrc: tabPaneItem.imgSrc_jpg,
                                     imgAlt: tabPaneItem.name,
@@ -87,8 +99,9 @@ function Drawer(props) {
                                         [tabPaneItem.type]: tabPaneItem.imgSrc_png   
                                         // dynamic object key: https://www.samanthaming.com/tidbits/37-dynamic-property-name-with-es6/#how-to-access-object-value-with-emoji-keys
                                     }
-                                }]
-                                setChangeItem(newData);
+                                }
+                                changeItem.current = newData // use useRef instead of useState to avoid unnecessary re-render
+                                setCountForceReRender(c=>c+1); // forcing re-render to update animated img with new animProps
                             }}>Try</button>
                         </div>
                     </div>
@@ -97,23 +110,6 @@ function Drawer(props) {
             return (null)
         })
     }
-
-    useEffect(() => {
-        // Component Did Update
-        dispatch({
-            type: TRY_IT_ON,
-            tryItem: changeItem[0].dispatchData
-        });
-
-        if (isFinishedAnimation) {
-            setIsFinishedAnimation(false);
-            setChangeItem(initialLocalState)
-        }
-
-        return () => {
-            // Clean Up Step
-        }
-    }, [isFinishedAnimation])
 
     return (
         <div className="col-md-8">
