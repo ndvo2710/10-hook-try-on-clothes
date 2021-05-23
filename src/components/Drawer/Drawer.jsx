@@ -31,12 +31,13 @@ function Drawer(props) {
         onRest: () => {
             console.log('------- Right After Animation -------');
             const dpData = {...changeItem.current.dispatchData};
-            changeItem.current = initialLocalState; // must reset changeItem before dispatch data to grs (global redux state)
-            dispatch({
-                type: TRY_IT_ON,
-                tryItem: dpData
-            });
-            
+            if (changeItem.current.indexAnimation !== initialLocalState.indexAnimation) {
+                changeItem.current = initialLocalState; // must reset changeItem before dispatch data to grs (global redux state)
+                dispatch({
+                    type: TRY_IT_ON,
+                    tryItem: dpData
+                });
+            }            
         } ,
     })
 
